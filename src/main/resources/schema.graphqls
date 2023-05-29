@@ -1,0 +1,45 @@
+type Query {
+    toDos: [ToDo!]!
+    foos: [Foo!]!
+    foosByPage(first: Int, afterCursor: String): FooConnection!
+}
+
+type Mutation {
+    createToDo(title: String!, author: String!): ToDo  # <2>
+    completeToDo(id: ID!): Boolean!  # <3>
+}
+
+type ToDo { # <4>
+    id: ID!
+    title: String!
+    completed: Boolean!
+    author: Author!
+}
+
+type Author { # <5>
+    id: ID!
+    username: String!
+}
+
+type Foo {
+    id: ID!
+    color: String!
+    size: Int!
+    flubber: String
+}
+
+# Pagination for Foo
+
+type FooConnection {
+    edges: [FooEdge!]!
+    pageInfo: PageInfo!
+}
+
+type FooEdge {
+    node: Foo!
+}
+
+type PageInfo {
+    hasNextPage: Boolean!
+    endCursor: String!
+}
