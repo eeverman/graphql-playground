@@ -19,6 +19,7 @@ dependencies {
     implementation("io.micronaut.data:micronaut-data-jdbc")
     implementation("io.micronaut.flyway:micronaut-flyway")
     implementation("io.micronaut.graphql:micronaut-graphql")
+    implementation("com.graphql-java:graphql-java:20.2")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("jakarta.annotation:jakarta.annotation-api")
     implementation("org.apache.commons:commons-collections4:4.4")

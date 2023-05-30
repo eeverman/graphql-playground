@@ -1,7 +1,7 @@
 type Query {
     toDos: [ToDo!]!
     foos: [Foo!]!
-    foosByPage(first: Int, afterCursor: String): FooConnection!
+    fooConnection(first: Int, afterCursor: String): FooConnection!
 }
 
 type Mutation {
@@ -28,15 +28,11 @@ type Foo {
     flubber: String
 }
 
-# Pagination for Foo
+# Connection (Pagination) for Foo
 
 type FooConnection {
-    edges: [FooEdge!]!
+    nodes: [Foo!]!
     pageInfo: PageInfo!
-}
-
-type FooEdge {
-    node: Foo!
 }
 
 type PageInfo {

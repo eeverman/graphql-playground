@@ -1,19 +1,21 @@
 package example.micronaut.page;
 
-import java.util.List;
+import example.micronaut.Foo;
 
-public class FooConnection<N> {
+import java.util.Map;
 
-	private final List<FooEdge<N>> edges;
+public class FooConnection {
+
+	private final Iterable<Map> nodes;
 	private final PageInfo pageInfo;
 
-	public FooConnection(List<FooEdge<N>> edges, PageInfo pageInfo) {
-		this.edges = edges;
+	public FooConnection(Iterable<Map> nodes, PageInfo pageInfo) {
+		this.nodes = nodes;
 		this.pageInfo = pageInfo;
 	}
 
-	public List<FooEdge<N>> getEdges() {
-		return edges;
+	public Iterable<Map> getNodes() {
+		return nodes;
 	}
 
 	public PageInfo getPageInfo() {

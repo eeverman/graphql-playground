@@ -1,5 +1,6 @@
 package example.micronaut;
 
+import example.micronaut.page.FooConnectionDataFetcher;
 import graphql.GraphQL;
 import graphql.execution.SubscriptionExecutionStrategy;
 import graphql.schema.GraphQLSchema;
@@ -24,6 +25,7 @@ public class GraphQLFactory {
     public GraphQL graphQL(ResourceResolver resourceResolver,
                            ToDosDataFetcher toDosDataFetcher,
                            FooDataFetcher fooDataFetcher,
+                           FooConnectionDataFetcher fooConnectionDataFetcher,
                            CreateToDoDataFetcher createToDoDataFetcher,
                            CompleteToDoDataFetcher completeToDoDataFetcher,
                            AuthorDataFetcher authorDataFetcher) {
@@ -41,17 +43,20 @@ public class GraphQLFactory {
 
         // Create the runtime wiring.
         RuntimeWiring runtimeWiring = RuntimeWiring.newRuntimeWiring()
-                .type("Query", typeWiring -> typeWiring  // <3>
+                .type("Query", typeWiring -> typeWiring
                         .dataFetcher("toDos", toDosDataFetcher))
 
-                .type("Query", typeWiring -> typeWiring  // <3>
+                .type("Query", typeWiring -> typeWiring
                         .dataFetcher("foos", fooDataFetcher))
 
-                .type("Mutation", typeWiring -> typeWiring // <4>
+                .type("Query", typeWiring -> typeWiring
+                        .dataFetcher("fooConnection", fooConnectionDataFetcher))
+
+                .type("Mutation", typeWiring -> typeWiring
                         .dataFetcher("createToDo", createToDoDataFetcher)
                         .dataFetcher("completeToDo", completeToDoDataFetcher))
 
-                .type("ToDo", typeWiring -> typeWiring // <5>
+                .type("ToDo", typeWiring -> typeWiring
                         .dataFetcher("author", authorDataFetcher))
 
                 .build();
