@@ -1,4 +1,4 @@
-package example.micronaut.page;
+package example.micronaut.foo;
 
 import example.micronaut.Foo;
 import org.slf4j.Logger;

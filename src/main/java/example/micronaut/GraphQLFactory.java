@@ -1,15 +1,13 @@
 package example.micronaut;
 
-import example.micronaut.page.FooConnectionDataFetcher;
+import example.micronaut.foo.FooConnectionDataFetcher;
 import graphql.GraphQL;
-import graphql.execution.SubscriptionExecutionStrategy;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import graphql.schema.idl.errors.SchemaMissingError;
-import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.core.io.ResourceResolver;
 import jakarta.inject.Singleton;

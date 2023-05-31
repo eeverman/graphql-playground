@@ -1,12 +1,13 @@
-package example.micronaut.page;
+package example.micronaut.foo;
 
-import example.micronaut.Foo;
+import example.micronaut.connection.plumbing.AbstractIterableRepository;
+import example.micronaut.connection.plumbing.IterableRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-public class FooMapConnectionRepository implements Iterator<Map>, Iterable<Map> {
+public class FooMapConnectionRepository extends AbstractIterableRepository<Map<String, Object>> {
 
 	private static final Logger LOG = LoggerFactory.getLogger(FooMapConnectionRepository.class);
 
@@ -43,7 +44,7 @@ public class FooMapConnectionRepository implements Iterator<Map>, Iterable<Map> 
 	}
 
 	@Override
-	public Iterator<Map> iterator() {
-		return this;
+	public void release() {
+		// Nothing to do this time...
 	}
 }

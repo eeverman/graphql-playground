@@ -1,6 +1,6 @@
-package example.micronaut.page;
+package example.micronaut.foo;
 
-import example.micronaut.Foo;
+import example.micronaut.connection.PageInfo;
 
 import java.util.Map;
 
