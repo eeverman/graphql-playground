@@ -2,6 +2,7 @@ type Query {
     toDos: [ToDo!]!
     foos: [Foo!]!
     fooConnection(first: Int, afterCursor: String): FooConnection!
+    narrowResultConnection(first: Int, afterCursor: String): NarrowResultConnection!
 }
 
 type Mutation {
@@ -31,11 +32,99 @@ type Foo {
 # Connection (Pagination) for Foo
 
 type FooConnection {
+	pageInfo: PageInfo!
     nodes: [Foo!]!
-    pageInfo: PageInfo!
 }
 
 type PageInfo {
     hasNextPage: Boolean!
     endCursor: String!
 }
+
+type NarrowResultConnection {
+	pageInfo: PageInfo!
+    nodes: [NarrowResult!]!
+}
+
+type NarrowResult {
+	OrganizationIdentifier: String
+	OrganizationFormalName: String
+	ActivityIdentifier: String
+	ActivityStartDate: String
+	ActivityStartTime_Time: String
+	ActivityStartTime_TimeZoneCode: String
+	MonitoringLocationIdentifier: String
+	ResultIdentifier: String
+	DataLoggerLine: String
+	ResultDetectionConditionText: String
+	MethodSpecificationName: String
+	CharacteristicName: String
+	ResultSampleFractionText: String
+	ResultMeasureValue: String
+	ResultMeasure_MeasureUnitCode: String
+	MeasureQualifierCode: String
+	ResultStatusIdentifier: String
+	StatisticalBaseCode: String
+	ResultValueTypeName: String
+	ResultWeightBasisText: String
+	ResultTimeBasisText: String
+	ResultTemperatureBasisText: String
+	ResultParticleSizeBasisText: String
+	PrecisionValue: String
+	DataQuality_BiasValue: String
+	ConfidenceIntervalValue: String
+	UpperConfidenceLimitValue: String
+	LowerConfidenceLimitValue: String
+	ResultCommentText: String
+	USGSPCode: String
+	ResultDepthHeightMeasure_MeasureValue: String
+	ResultDepthHeightMeasure_MeasureUnitCode: String
+	ResultDepthAltitudeReferencePointText: String
+	ResultSamplingPointName: String
+	BiologicalIntentName: String
+	BiologicalIndividualIdentifier: String
+	SubjectTaxonomicName: String
+	UnidentifiedSpeciesIdentifier: String
+	SampleTissueAnatomyName: String
+	GroupSummaryCountWeight_MeasureValue: String
+	GroupSummaryCountWeight_MeasureUnitCode: String
+	CellFormName: String
+	CellShapeName: String
+	HabitName: String
+	VoltismName: String
+	TaxonomicPollutionTolerance: String
+	TaxonomicPollutionToleranceScaleText: String
+	TrophicLevelName: String
+	FunctionalFeedingGroupName: String
+	TaxonomicDetailsCitation_ResourceTitleName: String
+	TaxonomicDetailsCitation_ResourceCreatorName: String
+	TaxonomicDetailsCitation_ResourceSubjectText: String
+	TaxonomicDetailsCitation_ResourcePublisherName: String
+	TaxonomicDetailsCitation_ResourceDate: String
+	TaxonomicDetailsCitation_ResourceIdentifier: String
+	FrequencyClassInformationUrl: String
+	ResultAnalyticalMethod_MethodIdentifier: String
+	ResultAnalyticalMethod_MethodIdentifierContext: String
+	ResultAnalyticalMethod_MethodName: String
+	ResultAnalyticalMethod_MethodUrl: String
+	ResultAnalyticalMethod_MethodQualifierTypeName: String
+	MethodDescriptionText: String
+	LaboratoryName: String
+	AnalysisStartDate: String
+	AnalysisStartTime_Time: String
+	AnalysisStartTime_TimeZoneCode: String
+	AnalysisEndDate: String
+	AnalysisEndTime_Time: String
+	AnalysisEndTime_TimeZoneCode: String
+	ResultLaboratoryCommentCode: String
+	ResultLaboratoryCommentText: String
+	ResultDetectionQuantitationLimitUrl: String
+	LaboratoryAccreditationIndicator: String
+	LaboratoryAccreditationAuthorityName: String
+	TaxonomistAccreditationIndicator: String
+	TaxonomistAccreditationAuthorityName: String
+	LabSamplePreparationUrl: String
+	ProviderName: String
+}
+
+

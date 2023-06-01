@@ -1,6 +1,7 @@
 package example.micronaut;
 
 import example.micronaut.foo.FooConnectionDataFetcher;
+import example.micronaut.narrowresult.NarrowResultConnectionDataFetcher;
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
@@ -19,50 +20,54 @@ import java.io.InputStreamReader;
 @Factory // <1>
 public class GraphQLFactory {
 
-    @Singleton // <2>
-    public GraphQL graphQL(ResourceResolver resourceResolver,
-                           ToDosDataFetcher toDosDataFetcher,
-                           FooDataFetcher fooDataFetcher,
-                           FooConnectionDataFetcher fooConnectionDataFetcher,
-                           CreateToDoDataFetcher createToDoDataFetcher,
-                           CompleteToDoDataFetcher completeToDoDataFetcher,
-                           AuthorDataFetcher authorDataFetcher) {
-        SchemaParser schemaParser = new SchemaParser();
-        SchemaGenerator schemaGenerator = new SchemaGenerator();
+	@Singleton // <2>
+	public GraphQL graphQL(ResourceResolver resourceResolver,
+			ToDosDataFetcher toDosDataFetcher,
+			FooDataFetcher fooDataFetcher,
+			FooConnectionDataFetcher fooConnectionDataFetcher,
+			NarrowResultConnectionDataFetcher narrowResultConnectionDataFetcher,
+			CreateToDoDataFetcher createToDoDataFetcher,
+			CompleteToDoDataFetcher completeToDoDataFetcher,
+			AuthorDataFetcher authorDataFetcher) {
+		SchemaParser schemaParser = new SchemaParser();
+		SchemaGenerator schemaGenerator = new SchemaGenerator();
 
-        // Load the schema
-        InputStream schemaDefinition = resourceResolver
-                .getResourceAsStream("classpath:schema.graphqls")
-                .orElseThrow(SchemaMissingError::new);
+		// Load the schema
+		InputStream schemaDefinition = resourceResolver
+				.getResourceAsStream("classpath:schema.graphqls")
+				.orElseThrow(SchemaMissingError::new);
 
-        // Parse the schema and merge it into a type registry
-        TypeDefinitionRegistry typeRegistry = new TypeDefinitionRegistry();
-        typeRegistry.merge(schemaParser.parse(new BufferedReader(new InputStreamReader(schemaDefinition))));
+		// Parse the schema and merge it into a type registry
+		TypeDefinitionRegistry typeRegistry = new TypeDefinitionRegistry();
+		typeRegistry.merge(schemaParser.parse(new BufferedReader(new InputStreamReader(schemaDefinition))));
 
-        // Create the runtime wiring.
-        RuntimeWiring runtimeWiring = RuntimeWiring.newRuntimeWiring()
-                .type("Query", typeWiring -> typeWiring
-                        .dataFetcher("toDos", toDosDataFetcher))
+		// Create the runtime wiring.
+		RuntimeWiring runtimeWiring = RuntimeWiring.newRuntimeWiring()
+				.type("Query", typeWiring -> typeWiring
+						.dataFetcher("toDos", toDosDataFetcher))
 
-                .type("Query", typeWiring -> typeWiring
-                        .dataFetcher("foos", fooDataFetcher))
+				.type("Query", typeWiring -> typeWiring
+						.dataFetcher("foos", fooDataFetcher))
 
-                .type("Query", typeWiring -> typeWiring
-                        .dataFetcher("fooConnection", fooConnectionDataFetcher))
+				.type("Query", typeWiring -> typeWiring
+						.dataFetcher("fooConnection", fooConnectionDataFetcher))
 
-                .type("Mutation", typeWiring -> typeWiring
-                        .dataFetcher("createToDo", createToDoDataFetcher)
-                        .dataFetcher("completeToDo", completeToDoDataFetcher))
+				.type("Query", typeWiring -> typeWiring
+						.dataFetcher("narrowResultConnection", narrowResultConnectionDataFetcher))
 
-                .type("ToDo", typeWiring -> typeWiring
-                        .dataFetcher("author", authorDataFetcher))
+				.type("Mutation", typeWiring -> typeWiring
+						.dataFetcher("createToDo", createToDoDataFetcher)
+						.dataFetcher("completeToDo", completeToDoDataFetcher))
 
-                .build();
+				.type("ToDo", typeWiring -> typeWiring
+						.dataFetcher("author", authorDataFetcher))
 
-        // Create the executable schema.
-        GraphQLSchema graphQLSchema = schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
+				.build();
 
-        // Return the GraphQL bean.
-        return GraphQL.newGraphQL(graphQLSchema).build();
-    }
+		// Create the executable schema.
+		GraphQLSchema graphQLSchema = schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
+
+		// Return the GraphQL bean.
+		return GraphQL.newGraphQL(graphQLSchema).build();
+	}
 }

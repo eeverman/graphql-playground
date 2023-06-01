@@ -15,8 +15,6 @@ public class FooConnectionDataFetcher extends AbstractConnectionDataFetcher {
 
     private static final Logger LOG = LoggerFactory.getLogger(FooConnectionDataFetcher.class);
 
-    public static final int DEFAULT_NODE_COUNT = 100;
-
     @Override
     protected IterableRepository<Map<String, Object>> getNewRepository(DataFetchingEnvironment env) {
         return new FooMapConnectionRepository(1000);
