@@ -11,6 +11,18 @@ package example.micronaut.connection;
  */
 public interface Connection<T> {
 
+	/**
+	 * Argument name for how many records to return, i.e. The first X records.
+	 * Type Int value expected.
+	 */
+	String ARG_FIRST = "first";
+	/**
+	 * Argument name for the cursor to start loading records after.
+	 * i.e. The records after cursor X.  'cursor X' would have been passed in a
+	 * the pageInfo of a previous response.
+	 * Type String value expected. */
+	String ARG_AFTER_CURSOR = "afterCursor";
+
 	Iterable<T> getNodes();
 
 	PageInfo getPageInfo();
