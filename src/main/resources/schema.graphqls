@@ -2,7 +2,17 @@ type Query {
     toDos: [ToDo!]!
     foos: [Foo!]!
     fooConnection(first: Int, afterCursor: String): FooConnection!
-    narrowResultConnection(first: Int, afterCursor: String): NarrowResultConnection!
+    narrowResultConnection(first: Int = 100, afterCursor: String, filter ResultFilter!): NarrowResultConnection!
+}
+
+input ResultFilter {
+	statecode: String
+	countycode: String
+	characteristicType: String
+	startDateLo: String
+	startDateHi: String
+	providers: String
+	siteType: String
 }
 
 type Mutation {

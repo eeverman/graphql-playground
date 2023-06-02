@@ -1,15 +1,18 @@
-package example.micronaut.narrowresult;
+package wqp.result.narrowresult;
 
 import example.micronaut.connection.plumbing.AbstractIterableRepository;
+import graphql.schema.DataFetchingEnvironment;
 import org.apache.commons.csv.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import wqp.result.ResultFilterParams;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class NarrowResultConnectionRepository extends AbstractIterableRepository<Map<String, Object>> {
 
@@ -17,21 +20,59 @@ public class NarrowResultConnectionRepository extends AbstractIterableRepository
 
 	private static final Logger LOG = LoggerFactory.getLogger(NarrowResultConnectionRepository.class);
 
-	private final String url;
+	private URL url;
 	private int currentCount = 0;
 
 	protected CSVParser parser = null;
 
-	public NarrowResultConnectionRepository(String url) {
-		this.url = url;
+	public NarrowResultConnectionRepository(String urlString) {
+
+		LOG.debug("Constructing url based on passed url: '{}'", urlString);
+
+		try {
+			this.url = new URL(urlString);
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
 	}
+
+	public NarrowResultConnectionRepository(DataFetchingEnvironment env) {
+		url = buildUrl(env);
+	}
+
+	protected URL buildUrl(DataFetchingEnvironment env) {
+		String baseUrl = "https://www.waterqualitydata.us/data/Result/search?";
+		Map<String, Object> args = env.getArguments();
+
+		String argString = Arrays.stream(ResultFilterParams.values()).sorted().map(f ->{
+			if (args.containsKey(f.getKeyName())) {
+				return f.getKeyName() + "=" + args.get(f.getKeyName());
+			} else {
+				return null;
+			}
+		}).filter(s -> s != null).collect(Collectors.joining("&"));
+
+		String fullUrl = baseUrl + argString;
+
+		fullUrl += "mimeType=csv&zip=no&dataProfile=narrowResult";
+
+		LOG.debug("Constructing url based on request args: '{}'", fullUrl);
+
+		try {
+			return new URL(fullUrl);
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+
 
 	protected CSVParser getParser() throws IOException {
 
 		synchronized (PARSER_LOCK) {
 			if (this.parser == null) {
 				CSVFormat format = CSVFormat.DEFAULT.withFirstRecordAsHeader();
-				parser = CSVParser.parse(new URL(url), Charset.forName("UTF-8"), format);
+				parser = CSVParser.parse(url, Charset.forName("UTF-8"), format);
 			}
 		}
 
@@ -92,6 +133,9 @@ public class NarrowResultConnectionRepository extends AbstractIterableRepository
 
 	@Override
 	public void release() {
+
+		LOG.debug("Releasing repository after sending {} nodes", currentCount);
+
 		if (parser != null) {
 			try {
 				parser.close();

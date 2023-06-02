@@ -21,6 +21,10 @@ public abstract class AbstractIterableRepository<T> implements IterableRepositor
 			currentCount++;
 		}
 
+		if (!hasNext()) {
+			release();
+		}
+
 		LOG.debug("Found {} nodes (request page of {})", currentCount, nodeCount);
 
 		return page;

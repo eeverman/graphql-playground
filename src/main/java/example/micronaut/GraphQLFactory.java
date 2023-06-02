@@ -1,7 +1,7 @@
 package example.micronaut;
 
 import example.micronaut.foo.FooConnectionDataFetcher;
-import example.micronaut.narrowresult.NarrowResultConnectionDataFetcher;
+import wqp.result.narrowresult.NarrowResultConnectionDataFetcher;
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
