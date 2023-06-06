@@ -16,9 +16,10 @@ datasources:
 flyway:
   datasources:
     default:
-      enabled: true # <1>
+      enabled: true
 #end::flyway[]
 
 logger:
   levels:
     example.micronaut: DEBUG
+    wqp: DEBUG

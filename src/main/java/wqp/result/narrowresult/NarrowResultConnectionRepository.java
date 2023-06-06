@@ -18,6 +18,12 @@ public class NarrowResultConnectionRepository extends AbstractIterableRepository
 
 	private final Object PARSER_LOCK = new Object();
 
+	/**
+	 * Name of a GraphQL field name containing the filter object to filter results by.
+	 * In the env.arguments, this key may exist, afterwhich it may contain keys listed in ResultFilterParams.
+	 */
+	public static final String FILTER_KEY = "filter";
+
 	private static final Logger LOG = LoggerFactory.getLogger(NarrowResultConnectionRepository.class);
 
 	private URL url;
@@ -43,10 +49,18 @@ public class NarrowResultConnectionRepository extends AbstractIterableRepository
 	protected URL buildUrl(DataFetchingEnvironment env) {
 		String baseUrl = "https://www.waterqualitydata.us/data/Result/search?";
 		Map<String, Object> args = env.getArguments();
+		final Map<?, ?> filter = new HashMap<>(10, 1.0f);
+
+		Object filterObj = args.get(FILTER_KEY);
+
+		if (filterObj != null && filterObj instanceof Map<?, ?>) {
+			filter.putAll((Map) filterObj);
+		}
+
 
 		String argString = Arrays.stream(ResultFilterParams.values()).sorted().map(f ->{
-			if (args.containsKey(f.getKeyName())) {
-				return f.getKeyName() + "=" + args.get(f.getKeyName());
+			if (filter.containsKey(f.getKeyName())) {
+				return f.getKeyName() + "=" + filter.get(f.getKeyName());
 			} else {
 				return null;
 			}
@@ -54,7 +68,7 @@ public class NarrowResultConnectionRepository extends AbstractIterableRepository
 
 		String fullUrl = baseUrl + argString;
 
-		fullUrl += "mimeType=csv&zip=no&dataProfile=narrowResult";
+		fullUrl += "&mimeType=csv&zip=no&dataProfile=narrowResult";
 
 		LOG.debug("Constructing url based on request args: '{}'", fullUrl);
 

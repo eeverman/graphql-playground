@@ -2,7 +2,7 @@ type Query {
     toDos: [ToDo!]!
     foos: [Foo!]!
     fooConnection(first: Int, afterCursor: String): FooConnection!
-    narrowResultConnection(first: Int = 100, afterCursor: String, filter ResultFilter!): NarrowResultConnection!
+    narrowResultConnection(first: Int = 100, afterCursor: String, filter: ResultFilter!): NarrowResultConnection!
 }
 
 input ResultFilter {
@@ -135,6 +135,43 @@ type NarrowResult {
 	TaxonomistAccreditationAuthorityName: String
 	LabSamplePreparationUrl: String
 	ProviderName: String
+	monitoringLocation: MonitoringLocation
+}
+
+type MonitoringLocation {
+    CNTRY_UID: String
+    CNTY_UID: String
+    HCMTH_UID: String
+    HRDAT_UID: String
+    MLOC_CONTRIB_DRAINAGE_AREA: String
+    MLOC_DESC: String
+    MLOC_DRAINAGE_AREA: String
+    MLOC_HORIZONTAL_ACCURACY: String
+    MLOC_HUC_12: String
+    MLOC_HUC_8: String
+    MLOC_ID: String
+    MLOC_LAST_CHANGE_DATE: String
+    MLOC_LATITUDE: String
+    MLOC_LONGITUDE: String
+    MLOC_NAME: String
+    MLOC_SOURCE_MAP_SCALE: String
+    MLOC_TRANS_ID: String
+    MLOC_TRIBAL_LAND_NAME: String
+    MLOC_TRIBAL_LAND_YN: String
+    MLOC_UID: String
+    MLOC_VERTICAL_ACCURACY: String
+    MLOC_VERTICAL_MEASURE: String
+    MLTYP_UID: String
+    MSUNT_UID_CONTRB_DRAINAGE_AREA: String
+    MSUNT_UID_DRAINAGE_AREA: String
+    MSUNT_UID_HORIZONTAL_ACCURACY: String
+    MSUNT_UID_VERTICAL_ACCURACY: String
+    MSUNT_UID_VERTICAL_MEASURE: String
+    ORG_UID: String
+    ST_UID: String
+    USR_UID_LAST_CHANGE: String
+    VCMTH_UID: String
+    VRDAT_UID: String
 }
 
 

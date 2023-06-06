@@ -1,5 +1,6 @@
 package example.micronaut;
 
+import example.micronaut.monloc.MonLocDataLoader;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.runtime.http.scope.RequestScope;
 import org.dataloader.DataLoader;
@@ -14,12 +15,13 @@ public class DataLoaderRegistryFactory {
 
     @SuppressWarnings("unused")
     @RequestScope // <2>
-    public DataLoaderRegistry dataLoaderRegistry(AuthorDataLoader authorDataLoader) {
+    public DataLoaderRegistry dataLoaderRegistry(
+            AuthorDataLoader authorDataLoader, MonLocDataLoader monLocDataLoader) {
         DataLoaderRegistry dataLoaderRegistry = new DataLoaderRegistry();
         dataLoaderRegistry.register(
                 "author",
                 DataLoader.newMappedDataLoader(authorDataLoader)
-        ); // <3>
+        ).register("monLoc", DataLoader.newMappedDataLoader(monLocDataLoader)); // <3>
 
         LOG.trace("Created new data loader registry");
 

@@ -1,6 +1,7 @@
 package example.micronaut;
 
 import example.micronaut.foo.FooConnectionDataFetcher;
+import example.micronaut.monloc.MonLocDataFetcher;
 import wqp.result.narrowresult.NarrowResultConnectionDataFetcher;
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
@@ -26,6 +27,7 @@ public class GraphQLFactory {
 			FooDataFetcher fooDataFetcher,
 			FooConnectionDataFetcher fooConnectionDataFetcher,
 			NarrowResultConnectionDataFetcher narrowResultConnectionDataFetcher,
+			MonLocDataFetcher monLocDataFetcher,
 			CreateToDoDataFetcher createToDoDataFetcher,
 			CompleteToDoDataFetcher completeToDoDataFetcher,
 			AuthorDataFetcher authorDataFetcher) {
@@ -54,6 +56,8 @@ public class GraphQLFactory {
 
 				.type("Query", typeWiring -> typeWiring
 						.dataFetcher("narrowResultConnection", narrowResultConnectionDataFetcher))
+
+				.type("NarrowResult", typeWiring -> typeWiring.dataFetcher("monitoringLocation", monLocDataFetcher))
 
 				.type("Mutation", typeWiring -> typeWiring
 						.dataFetcher("createToDo", createToDoDataFetcher)
