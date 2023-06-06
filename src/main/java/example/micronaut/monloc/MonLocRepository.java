@@ -31,7 +31,13 @@ public class MonLocRepository implements GenericRepository<Map<String, Object>, 
         this.dataSource = dataSource;
     }
 
-    //@Transactional(TxType.SUPPORTS)
+    /*
+    Right now the @ReadOnly is a work-around for a Transaction issue that I don't fully
+    understand in Micronaut.  I'm bending the normal flow a bit in this class and it
+    seems to need this particular annotation.  Here is discussion:
+    https://github.com/micronaut-projects/micronaut-data/issues/1293
+     */
+
     @ReadOnly
     public Map<String, Map<String, Object>> findByIdIn(Collection<String> ids) {
 
@@ -76,6 +82,7 @@ public class MonLocRepository implements GenericRepository<Map<String, Object>, 
     }
 
 
+    @ReadOnly
     public Optional<Map<String, Object>> findById(String id) {
 
         LOG.debug("findById: '{}'", id);
