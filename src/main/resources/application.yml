@@ -6,10 +6,11 @@ graphql:
 #tag::datasource[]
 datasources:
   default:
-    driverClassName: org.postgresql.Driver  # <2>
-    dialect: POSTGRES # <3>
-    schema-generate: NONE # <4>
+    driverClassName: org.postgresql.Driver
+    dialect: POSTGRES
+    schema-generate: NONE
     initialization-fail-timeout: 10000
+
 #end::datasource[]
 ---
 #tag::flyway[]
