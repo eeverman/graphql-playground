@@ -41,7 +41,7 @@ public class MonLocRepository implements GenericRepository<Map<String, Object>, 
     @ReadOnly
     public Map<String, Map<String, Object>> findByIdIn(Collection<String> ids) {
 
-        LOG.debug("findByIdIn: '{}'", ids);
+        LOG.debug("findByIdIn for ids: '{}'", ids);
 
         try (Connection conn = dataSource.getConnection()) {
             PreparedStatement st = conn.prepareStatement(FIND_BY_ID_IN_QUERY);
@@ -63,12 +63,12 @@ public class MonLocRepository implements GenericRepository<Map<String, Object>, 
                     record.put(md.getColumnName(i), rs.getObject(i));
                 }
 
-                LOG.debug("Found record: '{}'", record.get(ID_FIELD_NAME));
+                LOG.trace("Found record: '{}'", record.get(ID_FIELD_NAME));
 
                 records.put(record.get(ID_FIELD_NAME).toString(), record);
             }
 
-            LOG.debug("findById: '{}' FOUND {} records", ids, records.size());
+            LOG.debug("Found {} records", records.size());
 
             rs.close();
 
@@ -85,7 +85,7 @@ public class MonLocRepository implements GenericRepository<Map<String, Object>, 
     @ReadOnly
     public Optional<Map<String, Object>> findById(String id) {
 
-        LOG.debug("findById: '{}'", id);
+        LOG.debug("findById for ids: '{}'", id);
 
         try (Connection conn = dataSource.getConnection()) {
             PreparedStatement st = conn.prepareStatement(FIND_BY_ID_QUERY);
