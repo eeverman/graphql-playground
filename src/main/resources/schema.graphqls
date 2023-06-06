@@ -1,8 +1,7 @@
 type Query {
-    toDos: [ToDo!]!
+    narrowResultConnection(first: Int = 100, afterCursor: String, filter: ResultFilter!): NarrowResultConnection!
     foos: [Foo!]!
     fooConnection(first: Int, afterCursor: String): FooConnection!
-    narrowResultConnection(first: Int = 100, afterCursor: String, filter: ResultFilter!): NarrowResultConnection!
 }
 
 input ResultFilter {
@@ -13,42 +12,6 @@ input ResultFilter {
 	startDateHi: String
 	providers: String
 	siteType: String
-}
-
-type Mutation {
-    createToDo(title: String!, author: String!): ToDo  # <2>
-    completeToDo(id: ID!): Boolean!  # <3>
-}
-
-type ToDo { # <4>
-    id: ID!
-    title: String!
-    completed: Boolean!
-    author: Author!
-}
-
-type Author { # <5>
-    id: ID!
-    username: String!
-}
-
-type Foo {
-    id: ID!
-    color: String!
-    size: Int!
-    flubber: String
-}
-
-# Connection (Pagination) for Foo
-
-type FooConnection {
-	pageInfo: PageInfo!
-    nodes: [Foo!]!
-}
-
-type PageInfo {
-    hasNextPage: Boolean!
-    endCursor: String!
 }
 
 type NarrowResultConnection {
@@ -172,6 +135,36 @@ type MonitoringLocation {
     USR_UID_LAST_CHANGE: String
     VCMTH_UID: String
     VRDAT_UID: String
+}
+
+"""
+PageInfo is available on pageable connections to provide info needed to page through results.
+"""
+type PageInfo {
+    """'true' if there are more pages beyond this one, 'false' if there are no more pages"""
+    hasNextPage: Boolean!
+    """
+    The cursor for the last record on this page.
+    Paging typically requires requesting the next page be after this cursor via the 'afterCursor' argument.
+    """
+    endCursor: String!
+}
+
+
+######################################################################
+## Foo is just a simple example
+######################################################################
+
+type Foo {
+    id: ID!
+    color: String!
+    size: Int!
+    flubber: String
+}
+
+type FooConnection {
+	pageInfo: PageInfo!
+    nodes: [Foo!]!
 }
 
 

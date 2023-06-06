@@ -23,14 +23,10 @@ public class GraphQLFactory {
 
 	@Singleton // <2>
 	public GraphQL graphQL(ResourceResolver resourceResolver,
-			ToDosDataFetcher toDosDataFetcher,
 			FooDataFetcher fooDataFetcher,
 			FooConnectionDataFetcher fooConnectionDataFetcher,
 			NarrowResultConnectionDataFetcher narrowResultConnectionDataFetcher,
-			MonLocDataFetcher monLocDataFetcher,
-			CreateToDoDataFetcher createToDoDataFetcher,
-			CompleteToDoDataFetcher completeToDoDataFetcher,
-			AuthorDataFetcher authorDataFetcher) {
+			MonLocDataFetcher monLocDataFetcher) {
 		SchemaParser schemaParser = new SchemaParser();
 		SchemaGenerator schemaGenerator = new SchemaGenerator();
 
@@ -45,27 +41,18 @@ public class GraphQLFactory {
 
 		// Create the runtime wiring.
 		RuntimeWiring runtimeWiring = RuntimeWiring.newRuntimeWiring()
-				.type("Query", typeWiring -> typeWiring
-						.dataFetcher("toDos", toDosDataFetcher))
-
-				.type("Query", typeWiring -> typeWiring
-						.dataFetcher("foos", fooDataFetcher))
-
-				.type("Query", typeWiring -> typeWiring
-						.dataFetcher("fooConnection", fooConnectionDataFetcher))
 
 				.type("Query", typeWiring -> typeWiring
 						.dataFetcher("narrowResultConnection", narrowResultConnectionDataFetcher))
 
 				.type("NarrowResult", typeWiring -> typeWiring.dataFetcher("monitoringLocation", monLocDataFetcher))
 
-				.type("Mutation", typeWiring -> typeWiring
-						.dataFetcher("createToDo", createToDoDataFetcher)
-						.dataFetcher("completeToDo", completeToDoDataFetcher))
+				/* Simple Foo example */
+				.type("Query", typeWiring -> typeWiring
+						.dataFetcher("foos", fooDataFetcher))
 
-				.type("ToDo", typeWiring -> typeWiring
-						.dataFetcher("author", authorDataFetcher))
-
+				.type("Query", typeWiring -> typeWiring
+						.dataFetcher("fooConnection", fooConnectionDataFetcher))
 				.build();
 
 		// Create the executable schema.
