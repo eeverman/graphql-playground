@@ -1,9 +1,17 @@
-#tag::graphiql[]
+
+micronaut:
+  executors:
+    io:
+      # The number of threads available for IO tasks, which will tie to the number
+      # of concurrent requests that can be handled.
+      # See https://docs.micronaut.io/2.0.0.M2/guide/index.html#reactiveServer
+      type: fixed
+      nThreads: 75
+
 graphql:
   graphiql.enabled: true
-#end::graphiql[]
----
-#tag::datasource[]
+
+
 datasources:
   default:
     driverClassName: org.postgresql.Driver
@@ -11,7 +19,7 @@ datasources:
     schema-generate: NONE
     initialization-fail-timeout: 10000
 
-#end::datasource[]
+
 ---
 #tag::flyway[]
 flyway:
