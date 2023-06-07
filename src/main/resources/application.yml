@@ -18,14 +18,17 @@ datasources:
     dialect: POSTGRES
     schema-generate: NONE
     initialization-fail-timeout: 10000
-
+    default-read-only: true
+    url: ${JDBC_URL}
+    username: ${JDBC_USERNAME}
+    password: ${JDBC_PASSWORD}
 
 ---
 #tag::flyway[]
 flyway:
   datasources:
     default:
-      enabled: true
+      enabled: ${ENABLE_DB_MIGRATION:false}
 #end::flyway[]
 
 logger:

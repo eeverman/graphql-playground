@@ -21,11 +21,16 @@ public class MonLocRepository implements GenericRepository<Map<String, Object>, 
 
     final DataSource dataSource;
 
-    private final String ID_FIELD_NAME = "MLOC_ID";
+    private final String ID_FIELD_NAME = "full_site_id";
+
+
+    private final String FIND_BY_ID_IN_QUERY = "select ml.*, org.\"ORG_ID\" || '-' || ml.\"MLOC_ID\" as full_site_id " +
+            "from wqx_dump.\"MONITORING_LOCATION\" ml inner join wqx_dump.\"ORGANIZATION\" org on ml.\"ORG_UID\" = org.\"ORG_UID\" " +
+            "where org.\"ORG_ID\" || '-' || ml.\"MLOC_ID\" = ANY (?)";
+
+//    private final String FIND_BY_ID_IN_QUERY = "select * from wqx_dump.\"MONITORING_LOCATION\" where \"MLOC_ID\" = any (?)";
 
     private final String FIND_BY_ID_QUERY = "select * from wqx_dump.\"MONITORING_LOCATION\" where \"MLOC_ID\" = ?";
-
-    private final String FIND_BY_ID_IN_QUERY = "select * from wqx_dump.\"MONITORING_LOCATION\" where \"MLOC_ID\" = any (?)";
 
     public MonLocRepository(DataSource dataSource) {
         this.dataSource = dataSource;
